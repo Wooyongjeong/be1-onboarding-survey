@@ -1,11 +1,11 @@
 package com.innercircle.survey.controller;
 
-import com.innercircle.survey.dto.request.SubmitResponseRequestDto;
-import com.innercircle.survey.dto.request.SurveyCreateRequestDto;
-import com.innercircle.survey.dto.request.SurveyUpdateRequestDto;
-import com.innercircle.survey.dto.response.SurveyResponseDto;
-import com.innercircle.survey.dto.response.SurveyResponseResponseDtos;
-import com.innercircle.survey.service.SurveyService;
+import com.innercircle.survey.controller.dto.request.SubmitResponseRequestDto;
+import com.innercircle.survey.controller.dto.request.SurveyCreateRequestDto;
+import com.innercircle.survey.controller.dto.request.SurveyUpdateRequestDto;
+import com.innercircle.survey.controller.dto.response.SurveyResponseDto;
+import com.innercircle.survey.controller.dto.response.SurveyResponseResponseDtos;
+import com.innercircle.survey.application.OldSurveyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/v1/api/surveys")
 @RestController
 public class SurveyController {
-    private final SurveyService surveyService;
+    private final OldSurveyService oldSurveyService;
 
     @PostMapping
     public ResponseEntity<SurveyResponseDto> createSurvey(
             @RequestBody SurveyCreateRequestDto surveyCreateRequestDto
     ) {
-        SurveyResponseDto responseDto = surveyService.createSurvey(surveyCreateRequestDto);
+        SurveyResponseDto responseDto = oldSurveyService.createSurvey(surveyCreateRequestDto);
         return ResponseEntity.ok(responseDto);
     }
 
@@ -29,7 +29,7 @@ public class SurveyController {
             @PathVariable("surveyId") Long surveyId,
             @RequestBody SurveyUpdateRequestDto surveyUpdateRequestDto
     ) {
-        SurveyResponseDto responseDto = surveyService.updateSurvey(surveyId, surveyUpdateRequestDto);
+        SurveyResponseDto responseDto = oldSurveyService.updateSurvey(surveyId, surveyUpdateRequestDto);
         return ResponseEntity.ok(responseDto);
     }
 
@@ -38,7 +38,7 @@ public class SurveyController {
             @PathVariable("surveyId") Long surveyId,
             @RequestBody SubmitResponseRequestDto submitResponseRequestDto
     ) {
-        surveyService.submitResponse(surveyId, submitResponseRequestDto);
+        oldSurveyService.submitResponse(surveyId, submitResponseRequestDto);
         return ResponseEntity.ok("Successfully submitted");
     }
 
@@ -46,7 +46,7 @@ public class SurveyController {
     public ResponseEntity<SurveyResponseResponseDtos> getSurveyResponses(
             @PathVariable("surveyId") Long surveyId
     ) {
-        SurveyResponseResponseDtos answers = surveyService.getSurveyResponses(surveyId);
+        SurveyResponseResponseDtos answers = oldSurveyService.getSurveyResponses(surveyId);
         return ResponseEntity.ok(answers);
     }
 }
